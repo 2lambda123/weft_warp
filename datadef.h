@@ -51,6 +51,9 @@ struct spatial_data{
 	float		norm[3];	/**< normal vector of surface intersection */
 	unsigned	enforce_BC;	/**< boundary condition enforcement flag */
 	unsigned	weight;		/**< particle statistical weight */
+	unsigned	cell[10];
+	float		dist[10];
+	unsigned	mat[10];
 };
 
 /**
@@ -65,12 +68,15 @@ struct intersection_point {
 	float		y; 			/**< y-coordinate */
 	float		z; 			/**< z-coordinate */
 	float		surf_dist;  /**< distance to nearest surface */
-	int			cell; 		/**< most recently hit cell number */
-	int			mat;  		/**< most recently hit material number */
-	int			fiss; 		/**< most recently hit fissile flag */
-	float		norm[3];    /**< most recently hit normal */
-	int			sense;   	/**< most recently hit cell sense */
-	int 		tally_index;/**< tally index of most recently hit cell */
+	int		cell; 		/**< cell number */
+	int		mat;  		/**< material number */
+	int		fiss; 		/**< fissile flag */
+	float		norm[3];    /**< most recent normal */
+	int		sense;   	/**< most recent cell sense */
+	int 		tally_index;/**< tally index of most recent cell */
+	int		buff_index;
+	unsigned	launch_dex;
+	int 		cont;
 };
 
 /**

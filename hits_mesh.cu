@@ -13,6 +13,9 @@ rtDeclareVariable(unsigned,  cellmat,     attribute cell_mat, );
 rtDeclareVariable(unsigned,  cellfissile, attribute cell_fis, );
 rtDeclareVariable(unsigned,  sense,       attribute cell_sense, );
 rtDeclareVariable(float3,    normal,      attribute normal, );
+rtDeclareVariable(unsigned,  outer_cell,  , );
+rtDeclareVariable(uint, launch_index, rtLaunchIndex, );
+rtBuffer<spatial_data,1> positions_buffer;
 
 RT_PROGRAM void closest_hit()
 {
@@ -32,10 +35,17 @@ RT_PROGRAM void closest_hit()
 	payload.sense = sense;
 	if (sense == 0){rtPrintf("sense of closest_hit is 0!\n");}
 
+	if(cellnum == outer_cell){ payload.cont = 0; }
+
 	//update mat, cell, fiss
-	payload.mat			= cellmat;
+	payload.mat		= cellmat;
 	payload.cell		= cellnum;
 	payload.tally_index	= celltal;
 	payload.fiss		= cellfissile;
 
+	positions_buffer[payload.launch_dex].cell[payload.buff_index] = cellnum;
+	positions_buffer[payload.launch_dex].dist[payload.buff_index] = int_dist;
+	positions_buffer[payload.launch_dex].mat[payload.buff_index] = cellmat;
+
+	payload.buff_index++;
 }
